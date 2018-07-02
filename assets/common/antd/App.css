@@ -36,7 +36,7 @@
 	height: 64px;
 	line-height: 50px;
 	border-right: 1px solid #f2f2f2;
-	box-shadow: 0px 2px 6px #f0f1f2
+	/*box-shadow: 0px 2px 6px #f0f1f2*/
 }
 
 .ant-input-group-addon {
@@ -59,4 +59,11 @@
 }
 .ant-breadcrumb{
 	font-size:12px
+}
+.loading{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height:90vh;
+	font-size:40px;
 }
