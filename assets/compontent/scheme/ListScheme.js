@@ -61,14 +61,14 @@ class ListScheme extends React.Component {
 	fetch = (params = {}) => {
 		let that = this;
 		that.setState({
-			loading: true
+			loading:false
+			//loading: true
 		});
-		$.ajax({
+		/*$myAjax({
 			url: '/scheme/querySchemeAll',
 			method: 'POST',
 			data: params,
-			type: 'json',
-		}).done(function(data) {
+		}).then(data => {
 			that.setState({
 				spinning: false,
 				loading: false,
@@ -77,7 +77,9 @@ class ListScheme extends React.Component {
 					totalPage: data.count,
 				}
 			});
-		});
+		}).catch(err => {
+			console.log(err);
+		});*/
 	};
 	componentDidMount() { //类似mounted
 		let that = this;
