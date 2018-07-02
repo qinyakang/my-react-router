@@ -3,26 +3,26 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Hello React!</title>
-	<script src="static/assets/common/react/react.js"></script>
-	<script src="static/assets/common/react/react-dom.js"></script>
-	<script src="static/assets/common/react/moment.js"></script>
+	<script src="assets/common/react/react.js"></script>
+	<script src="assets/common/react/react-dom.js"></script>
+	<script src="assets/common/react/moment.js"></script>
 	<script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
-	<link rel="stylesheet" href="static/assets/common/antd/antd.css"/>
-	<link rel="stylesheet" href="static/assets/common/antd/App.css"/>
-	<script src="static/assets/common/antd/antd.js"></script>
-	<script src="static/assets/common/jquery-3.2.1.min.js"></script>
-	<script type="text/babel" src="static/assets/common/router.js"></script>
+	<link rel="stylesheet" href="assets/common/antd/antd.css"/>
+	<link rel="stylesheet" href="assets/common/antd/App.css"/>
+	<script src="assets/common/antd/antd.js"></script>
+	<script src="assets/common/jquery-3.2.1.min.js"></script>
+	<script type="text/babel" src="assets/common/router.js"></script>
 </head>
 <!--加载所有组件-->
-<script type="text/babel" src="static/assets/compontent/index/Index.js"></script>
-<script type="text/babel" src="static/assets/compontent/scheme/ListScheme.js"></script>
-<script type="text/babel" src="static/assets/compontent/scheme/FormScheme.js"></script>
-<script type="text/babel" src="static/assets/compontent/capital/ListCapital.js"></script>
-<script type="text/babel" src="static/assets/compontent/capital/FormCapital.js"></script>
-<script type="text/babel" src="static/assets/compontent/dealer/ListDealer.js"></script>
-<script type="text/babel" src="static/assets/compontent/dealer/FormDealer.js"></script>
-<script type="text/babel" src="static/assets/compontent/order/ListOrder.js"></script>
-<script type="text/babel" src="static/assets/compontent/order/FormOrder.js"></script>
+<script type="text/babel" src="assets/compontent/index/Index.js"></script>
+<script type="text/babel" src="assets/compontent/scheme/ListScheme.js"></script>
+<script type="text/babel" src="assets/compontent/scheme/FormScheme.js"></script>
+<script type="text/babel" src="assets/compontent/capital/ListCapital.js"></script>
+<script type="text/babel" src="assets/compontent/capital/FormCapital.js"></script>
+<script type="text/babel" src="assets/compontent/dealer/ListDealer.js"></script>
+<script type="text/babel" src="assets/compontent/dealer/FormDealer.js"></script>
+<script type="text/babel" src="assets/compontent/order/ListOrder.js"></script>
+<script type="text/babel" src="assets/compontent/order/FormOrder.js"></script>
 <!--组件加载完毕-->
 <body>
 	<div id="app"></div>
@@ -46,8 +46,8 @@
 		class HomePage extends React.Component {
 			state = {
 				collapsed: false,
-				logo: 'static/assets/common/image/logo.jpg',
-				footer: 'static/assets/common/image/footer.jpg',
+				logo: 'assets/common/image/logo.jpg',
+				footer: 'assets/common/image/footer.jpg',
 				marginLeft: 200,
 				nodeName:[],
 				openKeys:[],
@@ -57,15 +57,15 @@
 				if(this.state.marginLeft == 200) {
 					this.setState({
 						collapsed: !this.state.collapsed,
-						logo: 'static/assets/common/image/smallLogo.jpg',
-						footer: 'static/assets/common/image/smallfooter.jpg',
+						logo: 'assets/common/image/smallLogo.jpg',
+						footer: 'assets/common/image/smallfooter.jpg',
 						marginLeft: 80,
 					});
 				} else {
 					this.setState({
 						collapsed: !this.state.collapsed,
-						logo: 'static/assets/common/image/logo.jpg',
-						footer: 'static/assets/common/image/footer.jpg',
+						logo: 'assets/common/image/logo.jpg',
+						footer: 'assets/common/image/footer.jpg',
 						marginLeft: 200,
 					});
 				}
@@ -82,14 +82,20 @@
 				this.refresh();
 			};
 			refresh = (e) => {
-				ReactDOM.render(<div></div>, document.getElementById('antd-main'));//重置一下，不然无法刷新
-				this.setState({
-					nodeName:window.router[window.location.hash].nodeName
-				},() => {
-					setTimeout((id='antd-main') =>{//延迟0.1秒
-						ReactDOM.render(window.router[window.location.hash].compontent(),document.getElementById(id));
-					},100)
-				});
+				ReactDOM.render(<div><Icon type="loading" /></div>, document.getElementById('antd-main'));//重置一下，不然无法刷新
+				let $myRouter = window.router[window.location.hash];
+				console.log($myRouter);
+				if($myRouter != undefined){
+					this.setState({
+						nodeName:$myRouter.nodeName
+					},() => {
+						setTimeout((id='antd-main') =>{//延迟0.1秒
+							ReactDOM.render($myRouter.compontent(),document.getElementById(id));
+						},100)
+					});
+				}else{
+					alert('路哟解析异常');
+				}
 			}
 			componentWillMount(){
 				//按照路由渲染组件-->让后台知道
