@@ -28,8 +28,8 @@ class HomePage extends React.Component {
 		footer: 'assets/common/image/footer.jpg',
 		marginLeft: 200,
 		nodeName: [],
-		openKeys: [],
-		defaultSelectedKeys: [],
+		defaultOpenKeys: [],
+		defaultSelectedKeys:[],
 	};
 	toggle = () => {
 		if(this.state.marginLeft == 200) {
@@ -38,6 +38,8 @@ class HomePage extends React.Component {
 				logo: 'assets/common/image/smallLogo.jpg',
 				footer: 'assets/common/image/smallfooter.jpg',
 				marginLeft: 80,
+			},()=>{
+				
 			});
 		} else {
 			this.setState({
@@ -45,13 +47,16 @@ class HomePage extends React.Component {
 				logo: 'assets/common/image/logo.jpg',
 				footer: 'assets/common/image/footer.jpg',
 				marginLeft: 200,
+			},()=>{
+				
 			});
 		}
 	};
-	onOpenChange = (OpenKeys) => {
-		let openKeys = new Array(OpenKeys[OpenKeys.length - 1]);
+	onOpenChange = (defaultOpenKeys) => {
 		this.setState({
-			openKeys,
+			defaultOpenKeys:new Array(defaultOpenKeys[defaultOpenKeys.length - 1]),
+		},()=>{
+				
 		});
 	}
 	handleClick = (e) => {
@@ -61,19 +66,19 @@ class HomePage extends React.Component {
 	hashChange = () => {
 		if(window.location.hash == '') window.location.hash = '#/index/index';
 		let hash = window.location.hash;
-		let openKeys = hash.substr(2).split("/")[0].split("/");
+		let defaultOpenKeys = hash.substr(2).split("/")[0].split("/");
 		let defaultSelectedKeys = new Array(hash.substr(2).split("/").join(","));
 		this.setState({
-			openKeys,
+			defaultOpenKeys,
 			defaultSelectedKeys,
 		}, () => {
-			console.log(this.state.openKeys);
+			console.log(this.state.defaultOpenKeys);
 			console.log(this.state.defaultSelectedKeys);
 			this.refresh();
 		});
 	};
 	refresh = () => {
-		ReactDOM.render(<div><Icon type="loading" /></div>, document.getElementById('antd-main')); //重置一下，不然无法刷新
+		ReactDOM.render(<div><Icon type="loading" /></div>,document.getElementById('antd-main')); //重置一下，不然无法刷新
 		let $myRouter = window.router[window.location.hash];
 		if($myRouter != undefined) {
 			this.setState({
@@ -103,7 +108,7 @@ class HomePage extends React.Component {
 					<div className="logo" style={{}}>
 						<img style={{marginTop:12}} src={this.state.logo}/>
 					</div>
-					<Menu onClick={this.handleClick} onOpenChange={this.onOpenChange} className="menu" defaultSelectedKeys={this.state.defaultSelectedKeys} openKeys={this.state.openKeys} mode="inline">
+					<Menu onClick={this.handleClick} onOpenChange={this.onOpenChange} className="menu" defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys} mode="inline">
 						<SubMenu key="index" title={<span>
 							<Icon type="ant-design" /><span>首页</span></span>}>
 							<Menu.Item key="index,index">首页</Menu.Item>
@@ -154,7 +159,7 @@ class HomePage extends React.Component {
 							<Breadcrumb.Item style={{cursor:'pointer',color:'#1890ff'}} onClick={() => { this.refresh()} }>{this.state.nodeName[1]}</Breadcrumb.Item>
 						</Breadcrumb>
 					</Header>
-					<Content id='antd-main' style={{ padding: 18, margin: 0, minHeight: 520 ,overflow: 'auto'}}></Content>
+					<Content id='antd-main' style={{ padding: 18, margin: 0, minHeight: 520 ,overflow: 'auto',fontSize:12}}></Content>
 				</Layout>
 			</Layout>
 		);
