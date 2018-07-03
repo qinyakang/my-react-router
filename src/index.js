@@ -39,7 +39,12 @@ class HomePage extends React.Component {
 				footer: 'assets/common/image/smallfooter.jpg',
 				marginLeft: 80,
 			},()=>{
-				
+				ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
+				setTimeout(() => { //延迟0.1秒
+					ReactDOM.render(<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
+						, document.getElementById('antd-sider'));
+					this.refresh();
+				},1);
 			});
 		} else {
 			this.setState({
@@ -48,20 +53,14 @@ class HomePage extends React.Component {
 				footer: 'assets/common/image/footer.jpg',
 				marginLeft: 200,
 			},()=>{
-				
+				ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
+				setTimeout(() => { //延迟0.1秒
+					ReactDOM.render(<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
+						, document.getElementById('antd-sider'));
+					this.refresh();
+				},1);
 			});
 		}
-	};
-	onOpenChange = (defaultOpenKeys) => {
-		this.setState({
-			defaultOpenKeys:new Array(defaultOpenKeys[defaultOpenKeys.length - 1]),
-		},()=>{
-				
-		});
-	}
-	handleClick = (e) => {
-		let hash = '#/' + e.key.split(",").join("/");
-		window.location.hash = hash;
 	};
 	hashChange = () => {
 		if(window.location.hash == '') window.location.hash = '#/index/index';
@@ -74,19 +73,24 @@ class HomePage extends React.Component {
 		}, () => {
 			console.log(this.state.defaultOpenKeys);
 			console.log(this.state.defaultSelectedKeys);
-			this.refresh();
+			ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
+			setTimeout(() => { //延迟0.1秒
+				ReactDOM.render(<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
+					, document.getElementById('antd-sider'));
+				this.refresh();
+			},1);
 		});
 	};
 	refresh = () => {
-		ReactDOM.render(<div><Icon type="loading" /></div>,document.getElementById('antd-main')); //重置一下，不然无法刷新
+		ReactDOM.render(<div><Icon type="loading" /></div>,document.getElementById('antd-main')); //刷新内容
 		let $myRouter = window.router[window.location.hash];
 		if($myRouter != undefined) {
 			this.setState({
 				nodeName: $myRouter.nodeName
 			}, () => {
-				setTimeout((id = 'antd-main') => { //延迟0.1秒
-					ReactDOM.render($myRouter.compontent(), document.getElementById(id));
-				}, 100)
+				setTimeout((main = 'antd-main') => { //延迟0.1秒
+					ReactDOM.render($myRouter.compontent(), document.getElementById(main));
+				},1);
 			});
 		} else {
 			Modal.warning({
@@ -104,44 +108,9 @@ class HomePage extends React.Component {
 	render() {
 		return(
 			<Layout>
-				<Sider trigger={null} collapsible collapsed={this.state.collapsed} className="sider">
-					<div className="logo" style={{}}>
-						<img style={{marginTop:12}} src={this.state.logo}/>
-					</div>
-					<Menu onClick={this.handleClick} onOpenChange={this.onOpenChange} className="menu" defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys} mode="inline">
-						<SubMenu key="index" title={<span>
-							<Icon type="ant-design" /><span>首页</span></span>}>
-							<Menu.Item key="index,index">首页</Menu.Item>
-						</SubMenu>
-						<SubMenu key="order" title={<span>
-							<Icon type="file" /><span>进件管理</span></span>}>
-							<Menu.Item key="order,list">列表</Menu.Item>
-							<Menu.Item key="order,form">新增进件</Menu.Item>
-						</SubMenu>
-						<SubMenu key="scheme" title={<span>
-							<Icon type="profile" /><span>金融方案</span></span>}>
-							<Menu.Item key="scheme,list">列表</Menu.Item>
-							<Menu.Item key="scheme,form">新增金融方案</Menu.Item>
-						</SubMenu>
-						<SubMenu key="dealer" title={<span>
-							<Icon type="appstore" /><span>车商报备</span></span>}>
-							<Menu.Item key="dealer,list">列表</Menu.Item>
-							<Menu.Item key="dealer,form">新增车商报备</Menu.Item>
-						</SubMenu>
-						<SubMenu key="capital" title={<span>
-							<Icon type="pie-chart" /><span>资金方报备</span></span>}>
-							<Menu.Item key="capital,list">列表</Menu.Item>
-							<Menu.Item key="capital,form">新增资金方报备</Menu.Item>
-						</SubMenu>
-						<SubMenu key="download" title={<span>
-							<Icon type="download" /><span>下载中心</span></span>}>
-							<Menu.Item key="download,download">下载中心</Menu.Item>
-						</SubMenu>
-					</Menu>
-					<div className="logo" style={{borderTop: '1px solid #f2f2f2'}}>
-						<img style={{}} src={this.state.footer}/>
-					</div>
-				</Sider>
+				<div id="antd-sider">
+					<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
+				</div>
 				<Layout style={{ padding:0,background: '#FCFCFF',marginLeft:this.state.marginLeft,height: '100vh'}}>
 					<Header style={{background: '#fff',paddingRight:20,paddingLeft:20,curdor: 'pointer',borderBottom: '1px solid #f2f2f2'}}>
 						<div style={{float: 'left'}}>
