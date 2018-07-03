@@ -53,4 +53,10 @@ const router = { //依据当前hash值，找到对应的组件(页面)
 			return <FormOrder/>
 		} 
 	},
+	'#/download/download':{
+		nodeName: ['下载管理', '下载'],
+		compontent:function(){
+			return <DownLoad/>
+		}
+	}
 }

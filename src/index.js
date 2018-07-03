@@ -15,7 +15,7 @@ const Col = antd.Col;
 const Pagination = antd.Pagination;
 const TreeSelect = antd.TreeSelect;
 const Modal = antd.Modal;
-
+const Switch = antd.Switch;
 class HomePage extends React.Component {
 	init = () => { //组件的一些初始化操作
 		window.addEventListener('hashchange', () => { //监听hash
@@ -24,41 +24,73 @@ class HomePage extends React.Component {
 	};
 	state = {
 		collapsed: false,
-		logo: 'assets/common/image/logo.jpg',
-		footer: 'assets/common/image/footer.jpg',
+		logo: 'assets/common/image/ant-design.svg',
+		footer: 'assets/common/image/react.svg',
 		marginLeft: 200,
+		theme:'dark',
+		siderBackColor:'#001529',//001529
+		siderColor:'#fff',
+		sideBorder:'1px solid #000',
+		display:'inline-block',
 		nodeName: [],
 		defaultOpenKeys: [],
 		defaultSelectedKeys:[],
 	};
+	refreshSider = () =>{
+		ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
+		setTimeout(() => { //延迟0.1秒
+			ReactDOM.render(<MySider 
+				sideBorder = {this.state.sideBorder}
+				siderBackColor={this.state.siderBackColor} 
+				siderColor = {this.state.siderColor}  
+				display = {this.state.display} 
+				collapsed={this.state.collapsed} 
+				theme={this.state.theme} 
+				footer={this.state.footer} 
+				logo={this.state.logo} 
+				defaultSelectedKeys={this.state.defaultSelectedKeys} 
+				defaultOpenKeys={this.state.defaultOpenKeys}/>
+			,document.getElementById('antd-sider'));
+			this.refresh();
+		},1);
+	}
+	themeChange = () =>{
+		if(this.state.theme == 'light') {
+			this.setState({
+				theme: 'dark',
+				siderBackColor:'#001529',
+				siderColor:'#fff',
+				sideBorder:'1px solid #000',
+			},()=>{
+				this.refreshSider();
+			});
+		} else {
+			this.setState({
+				theme: 'light',
+				siderBackColor:'#fff',
+				siderColor:'#000',
+				sideBorder:'1px solid #f2f2f2',
+			},()=>{
+				this.refreshSider();
+			});
+		}
+	}
 	toggle = () => {
 		if(this.state.marginLeft == 200) {
 			this.setState({
 				collapsed: !this.state.collapsed,
-				logo: 'assets/common/image/smallLogo.jpg',
-				footer: 'assets/common/image/smallfooter.jpg',
 				marginLeft: 80,
+				display:'none',
 			},()=>{
-				ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
-				setTimeout(() => { //延迟0.1秒
-					ReactDOM.render(<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
-						, document.getElementById('antd-sider'));
-					this.refresh();
-				},1);
+				this.refreshSider();
 			});
 		} else {
 			this.setState({
 				collapsed: !this.state.collapsed,
-				logo: 'assets/common/image/logo.jpg',
-				footer: 'assets/common/image/footer.jpg',
 				marginLeft: 200,
+				display:'inline-block',
 			},()=>{
-				ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
-				setTimeout(() => { //延迟0.1秒
-					ReactDOM.render(<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
-						, document.getElementById('antd-sider'));
-					this.refresh();
-				},1);
+				this.refreshSider();
 			});
 		}
 	};
@@ -71,14 +103,7 @@ class HomePage extends React.Component {
 			defaultOpenKeys,
 			defaultSelectedKeys,
 		}, () => {
-			console.log(this.state.defaultOpenKeys);
-			console.log(this.state.defaultSelectedKeys);
-			ReactDOM.render(<div></div>,document.getElementById('antd-sider')); //刷新菜单
-			setTimeout(() => { //延迟0.1秒
-				ReactDOM.render(<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
-					, document.getElementById('antd-sider'));
-				this.refresh();
-			},1);
+			this.refreshSider();
 		});
 	};
 	refresh = () => {
@@ -108,18 +133,23 @@ class HomePage extends React.Component {
 	render() {
 		return(
 			<Layout>
-				<div id="antd-sider">
-					<MySider collapsed={this.state.collapsed} footer={this.state.footer} logo={this.state.logo} defaultSelectedKeys={this.state.defaultSelectedKeys} defaultOpenKeys={this.state.defaultOpenKeys}/>
-				</div>
+				<div id="antd-sider"></div>
 				<Layout style={{ padding:0,background: '#FCFCFF',marginLeft:this.state.marginLeft,height: '100vh'}}>
-					<Header style={{background: '#fff',paddingRight:20,paddingLeft:20,curdor: 'pointer',borderBottom: '1px solid #f2f2f2'}}>
-						<div style={{float: 'left'}}>
+					<Header style={{height:'10vh',background: '#fff',paddingRight:20,paddingLeft:20,curdor: 'pointer',borderBottom: '1px solid #f2f2f2'}}>
+						<div style={{float:'left'}}>
 							<Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} style={{marginRight:20,cursor: 'pointer'}} onClick={this.toggle} />
-							<Icon type="html5" />
+							<Icon type="html5"   style={{marginRight:20,cursor: ''}} />
 						</div>
 						<div style={{float: 'right'}}>
-							<Icon type="chrome" style={{marginRight:20}} />
-							<Icon type="twitter" />
+							<Icon type="chrome"  style={{marginRight:20}} />
+							<Icon type="twitter" style={{marginRight:20}} />
+							<Switch
+					          checked={this.state.theme === 'dark'}
+					          onChange={this.themeChange}
+					          checkedChildren="Dark"
+					          unCheckedChildren="Light"
+					          size="small"
+					        />
 						</div>
 					</Header>
 					<Header style={{background: '#fff',paddingLeft:20}}>

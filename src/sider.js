@@ -6,10 +6,13 @@ class MySider extends React.Component {
 	render() {
 		return(
 			<Sider trigger={null} collapsible collapsed={this.props.collapsed} className="sider">
-				<div className="logo" style={{}}>
-					<img style={{marginTop:12}} src={this.props.logo}/>
+				<div className="logo" style={{background:this.props.siderBackColor,borderRight:this.props.sideBorder}}>
+					<img style={{width:40}} src={this.props.logo}/>
+					<span style={{fontSize:16,fontWeight:600,display:this.props.display,marginLeft:20,color:this.props.siderColor}}>
+						<span style={{paddingTop:20}}>Ant-design</span>
+					</span>
 				</div>
-				<Menu onClick={this.handleClick} className="menu" defaultSelectedKeys={this.props.defaultSelectedKeys} defaultOpenKeys={this.props.defaultOpenKeys} mode="inline">
+				<Menu theme={this.props.theme} onClick={this.handleClick} className="menu" defaultSelectedKeys={this.props.defaultSelectedKeys} defaultOpenKeys={this.props.defaultOpenKeys} mode="inline">
 					<SubMenu key="index" title={<span>
 						<Icon type="ant-design" /><span>首页</span></span>}>
 						<Menu.Item key="index,index">首页</Menu.Item>
@@ -39,8 +42,11 @@ class MySider extends React.Component {
 						<Menu.Item key="download,download">下载中心</Menu.Item>
 					</SubMenu>
 				</Menu>
-				<div className="logo" style={{borderTop: '1px solid #f2f2f2'}}>
-					<img style={{}} src={this.props.footer}/>
+				<div className="logo" style={{background:this.props.siderBackColor,borderRight:this.props.sideBorder}}>
+					<img style={{width:40}} src={this.props.footer}/>
+					<span style={{fontSize:16,fontWeight:600,display:this.props.display,marginLeft:10,color:this.props.siderColor}}>
+						<span style={{paddingTop:20}}>myReact-router</span>
+					</span>
 				</div>
 			</Sider>
 			
